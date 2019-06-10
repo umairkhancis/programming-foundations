@@ -65,7 +65,9 @@ Node* add(int data, int n) {
 		return head;
 	}
 	
+	// validate n is a valid position for addition or not?
 	if(n < (getNoOfNodes()-1) ) {
+		// special case for first position
 		if(n == 0) {
 			newNode->next = head;
 			head = newNode;
@@ -79,8 +81,7 @@ Node* add(int data, int n) {
 		}
 
 		return head;
-	} 
-	else {
+	} else {
 		printf("Position %d is invalid for this linkedlist; Hence returning the same linkedlist head\n", n);
 		return head;
 	}
@@ -133,7 +134,6 @@ void printReverse(Node* p) {
 	printReverse(p->next);
 	printf("%d ", p->data);
 }
-
 
 Node* reverse(Node* head) {
 	// temp nodes for bookeeping
