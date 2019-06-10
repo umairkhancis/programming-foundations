@@ -22,7 +22,7 @@ void printReverse(Node* p);
 int getNoOfNodes();
 
 // test cases
-testAdd();
+void testAdd();
 
 Node* head = NULL; // empty list
 int main() {
@@ -63,26 +63,26 @@ Node* add(int data, int n) {
 	if(curr == NULL) {
 		head = newNode;
 		return head;
-	} else {
-		if(n < (getNoOfNodes()-1) ) {
-			if(n == 0) {
-				newNode->next = head;
-				head = newNode;
-			} else {
-				// iterate to the prevToNthPosition element of linkedlist
-				for(int i=0; i<n-1; i++) curr = curr->next;
+	}
+	
+	if(n < (getNoOfNodes()-1) ) {
+		if(n == 0) {
+			newNode->next = head;
+			head = newNode;
+		} else {
+			// iterate to the prevToNthPosition element of linkedlist
+			for(int i=0; i<n-1; i++) curr = curr->next;
 
-				Node* nthNode = curr->next;
-				curr->next = newNode;
-				newNode->next = nthNode;
-			}
-
-			return head;
-		} 
-		else {
-			printf("Position %d is invalid for this linkedlist; Hence returning the same linkedlist head\n", n);
-			return head;
+			Node* nthNode = curr->next;
+			curr->next = newNode;
+			newNode->next = nthNode;
 		}
+
+		return head;
+	} 
+	else {
+		printf("Position %d is invalid for this linkedlist; Hence returning the same linkedlist head\n", n);
+		return head;
 	}
 }
 
