@@ -6,67 +6,84 @@ struct Node {
 	Node* next;
 };
 
-Node* insert(int data, int n);
+
+Node* add(int data);
+Node* add(int data, int n);
+
 Node* remove(int n);
+
 Node* reverse(Node* head);
+
+
+// Helper functions
 void print();
 void print(Node* p);
 void printReverse(Node* p);
+int getNoOfNodes();
+
+// test cases
+testAdd();
 
 Node* head = NULL; // empty list
 int main() {
-	// // Insert elements at nth position; 0 based index
-	head = insert(2, 0); 
-	// print(); // 2
-	head = insert(3, 0);
-	// print(); // 3, 2
-	head = insert(4, 1);
-	// print(); // 3, 4, 2
-	head = insert(6, 0);
-	print();  // 6, 3, 4, 2
-
-	// // Remove elements from nth position; 0 based index
-	// head = remove(0);
-	// print(); // 3, 4, 2
-	// head = remove(1);
-	// print(); // 3, 2
-
-	// // Print elements of linked list using recurrsion
-	// print(head);  // 6, 3, 4, 2
-	// printReverse(head);  // 2, 4, 3, 6
-
-	// // Reverse the linked list using iterative method
-	printf("head->data = %d \n", head->data); // 6
-	head = reverse(head);
-	print(); // 2, 4, 3, 6
-	printf("head->data = %d \n", head->data); // 2
+	testAdd(); // 0->2->7->4->9->1->3->99->NULL - current state
 }
 
-Node* insert(int data, int n) {
-	// create temp node
+Node* add(int data) {
+	// Prepare newNode
 	Node* newNode = new Node();
 	newNode->data = data;
 	newNode->next = NULL;
 
-	// handle special case for inserting at the begining of the linked list
-	if(n == 0) {
-		newNode->next = head;
+	Node* curr = head;
+	// handle the special case when list is empty
+	if(curr == NULL) {
 		head = newNode;
 		return head;
 	}
 
-	// iterate till (n-1)th node 
-	Node* temp1 = head;
-	for(int i = 0; i < n-1; i++) {
-		temp1 = temp1->next;
-	}
+	// iterate to the last element of linkedlist
+	while(curr->next != NULL) curr = curr->next;
 
-	// fix the links
-	Node* temp2 = temp1->next; // nth Node
-	temp1->next = newNode;
-	newNode->next = temp2;
+	// add newNode to the last
+	curr->next = newNode;
 
 	return head;
+}
+
+Node* add(int data, int n) {
+	// Prepare newNode
+	Node* newNode = new Node();
+	newNode->data = data;
+	newNode->next = NULL;
+
+	Node* curr = head;
+
+	// handle the special case when list is empty
+	if(curr == NULL) {
+		head = newNode;
+		return head;
+	} else {
+		if(n < (getNoOfNodes()-1) ) {
+			if(n == 0) {
+				newNode->next = head;
+				head = newNode;
+			} else {
+				// iterate to the prevToNthPosition element of linkedlist
+				for(int i=0; i<n-1; i++) curr = curr->next;
+
+				Node* nthNode = curr->next;
+				curr->next = newNode;
+				newNode->next = nthNode;
+			}
+
+			return head;
+		} 
+		else {
+			printf("Position %d is invalid for this linkedlist; Hence returning the same linkedlist head\n", n);
+			return head;
+		}
+	}
 }
 
 Node* remove(int n) {
@@ -140,6 +157,27 @@ Node* reverse(Node* head) {
 	return head;
 }
 
+int getNoOfNodes() {
+	Node* curr = head;
+	int size = 0;
 
+	while(curr != NULL) {
+		size++;
+		curr = curr->next;
+	}
 
+	return size;
+}
 
+void testAdd() {
+	head = add(2);
+	head = add(4);
+	head = add(1);
+	head = add(3);
+	head = add(7, 1); // 2->7->4->1->3->NULL
+	head = add(9, 3); // 2->7->4->9->1->3->NULL
+	head = add(0, 0); // 0->2->7->4->9->1->3->NULL
+	head = add(99); // 0->2->7->4->9->1->3->99->NULL
+	printf("count is: %d\n", getNoOfNodes());
+	print();
+}
