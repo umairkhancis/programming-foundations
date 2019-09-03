@@ -14,7 +14,6 @@ Node* remove(int n);
 
 Node* reverse(Node* head);
 
-
 // Helper functions
 void print();
 void print(Node* p);
@@ -23,10 +22,12 @@ int getNoOfNodes();
 
 // test cases
 void testAdd();
+void testRemove();
 
 Node* head = NULL; // empty list
 int main() {
 	testAdd(); // 0->2->7->4->9->1->3->99->NULL - current state
+	testRemove(); // 0->2->7->4->9->1->3->99->NULL - current state
 }
 
 Node* add(int data) {
@@ -88,24 +89,34 @@ Node* add(int data, int n) {
 }
 
 Node* remove(int n) {
-
-	Node* firstNode = head;
-	if(n == 0) {
-		head = firstNode->next;
-		delete firstNode;
+	if(head == NULL) {
+		printf("Linkedlist is empty; Hence returning the same linkedlist head \n");
 		return head;
 	}
 
-	Node* prevOfNthNode = head;
-	for(int i =0; i < n-1; i++) {
-		prevOfNthNode = prevOfNthNode->next;
-	}
+	if(n <= (getNoOfNodes()-1)) {
+		Node* firstNode = head;
+		if(n == 0) {
+			head = firstNode->next;
+			delete firstNode;
+			return head;
+		}
 
-	Node* nthNode = prevOfNthNode->next;
-	prevOfNthNode->next = nthNode->next;
-	delete nthNode;
-	return head;
+		Node* curr = head;
+		for(int i =0; i < n-1; i++) {
+			curr = curr->next;
+		}
+
+		Node* nthNode = curr->next;
+		curr->next = nthNode->next;
+		delete nthNode;
+		return head;
+	} else {
+		printf("Invalid Position %d for this linkedlist \n", n);
+		return head;
+	}
 }
+
 
 void print() {
 	Node* current = head;
@@ -179,5 +190,19 @@ void testAdd() {
 	head = add(0, 0); // 0->2->7->4->9->1->3->NULL
 	head = add(99); // 0->2->7->4->9->1->3->99->NULL
 	printf("count is: %d\n", getNoOfNodes());
+	print();
+}
+
+void testRemove() {
+	head = remove(0);  // 2->7->4->9->1->3->99->NULL
+	head = remove(2);  // 2->7->9->1->3->99->NULL
+	head = remove(11);  // Invalid Position
+	head = remove(0); // 7->9->1->3->99->NULL
+	head = remove(0); // 9->1->3->99->NULL
+	head = remove(0); // 1->3->99->NULL
+	head = remove(0); // 3->99->NULL
+	head = remove(0); // 99->NULL
+	head = remove(0); // NULL
+	head = remove(0); // Linkedlist is empty; Hence returning the same linkedlist head.
 	print();
 }
